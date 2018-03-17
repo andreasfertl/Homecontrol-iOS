@@ -16,12 +16,10 @@ class TCPSocket: NSObject {
     var lastRxedMsg: String = ""
     weak var delegate: ReceiveMsgDelegate?
     
-    init(receiver: ReceiveMsgDelegate)
-    {
+    init(receiver: ReceiveMsgDelegate) {
         delegate = receiver
     }
     
-
     func setupNetworkCommunication(connectIp: String, connectPort: UInt32) {
 
         var readStream: Unmanaged<CFReadStream>?
@@ -69,24 +67,18 @@ extension TCPSocket: StreamDelegate {
             
             //Construct the "Message" object
             let msg = String(bytesNoCopy: buffer, length: numberOfBytesRead, encoding: .ascii, freeWhenDone: true)
-            if msg != nil
-            {
+            if msg != nil {
                 do {
                     let convertedMsg = try JSONDecoder().decode(Msg.self, from: msg!.data(using: .ascii)!)
 
-                    if convertedMsg.commandType == CommandType.MandolynSensor
-                    {
-                        let sensor = convertedMsg.value as? MandolynSensor
-                        let str = String(describing: sensor!.Humidity)
-                        print("humidity: " + str)
-                        return sensor;
+                    if convertedMsg.commandType == CommandType.MandolynSensor {
+                        return convertedMsg.value as? MandolynSensor;
                     }
                     else {
                         return nil;
                     }
                 }
-                catch let error
-                {
+                catch let error {
                     print(error)
                 }
             }
@@ -100,8 +92,7 @@ extension TCPSocket: StreamDelegate {
         switch eventCode {
         case Stream.Event.hasBytesAvailable:
             let msg = readAvailableBytes(stream: aStream as! InputStream)
-            if msg != nil
-            {
+            if msg != nil {
                 delegate?.receivedMessage(message: msg!)
             }
         case Stream.Event.endEncountered:
