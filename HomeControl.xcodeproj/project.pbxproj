@@ -7,13 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26836168202F2B07007EB5CF /* TCPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26836167202F2B07007EB5CF /* TCPSocket.swift */; };
+		2683616B202F2D01007EB5CF /* ProgramManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2683616A202F2D01007EB5CF /* ProgramManager.swift */; };
+		269216102041C7D50014E209 /* LightMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2692160F2041C7D50014E209 /* LightMessage.swift */; };
+		269216122042B0BF0014E209 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269216112042B0BF0014E209 /* Message.swift */; };
+		269216142042B3720014E209 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269216132042B3720014E209 /* Command.swift */; };
+		269216162042B4A70014E209 /* Destination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269216152042B4A70014E209 /* Destination.swift */; };
 		26C4AACC2025FBA700921290 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C4AACB2025FBA700921290 /* AppDelegate.swift */; };
-		26C4AACE2025FBA700921290 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C4AACD2025FBA700921290 /* ViewController.swift */; };
 		26C4AAD12025FBA700921290 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26C4AACF2025FBA700921290 /* Main.storyboard */; };
 		26C4AAD32025FBA700921290 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26C4AAD22025FBA700921290 /* Assets.xcassets */; };
 		26C4AAD62025FBA700921290 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26C4AAD42025FBA700921290 /* LaunchScreen.storyboard */; };
 		26C4AAE12025FBA700921290 /* HomeControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C4AAE02025FBA700921290 /* HomeControlTests.swift */; };
 		26C4AAEC2025FBA700921290 /* HomeControlUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C4AAEB2025FBA700921290 /* HomeControlUITests.swift */; };
+		26C4AAFC2025FCFC00921290 /* HomeControlTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C4AAFB2025FCFC00921290 /* HomeControlTableViewController.swift */; };
+		26C4AAFF2026005500921290 /* MandolynSensor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C4AAFE2026005500921290 /* MandolynSensor.swift */; };
+		26C4AB022026024500921290 /* NetworkMsgs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C4AB012026024500921290 /* NetworkMsgs.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +42,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		26836167202F2B07007EB5CF /* TCPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCPSocket.swift; sourceTree = "<group>"; };
+		2683616A202F2D01007EB5CF /* ProgramManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramManager.swift; sourceTree = "<group>"; };
+		2692160F2041C7D50014E209 /* LightMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightMessage.swift; sourceTree = "<group>"; };
+		269216112042B0BF0014E209 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		269216132042B3720014E209 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
+		269216152042B4A70014E209 /* Destination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Destination.swift; sourceTree = "<group>"; };
 		26C4AAC82025FBA700921290 /* HomeControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26C4AACB2025FBA700921290 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		26C4AACD2025FBA700921290 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		26C4AAD02025FBA700921290 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		26C4AAD22025FBA700921290 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		26C4AAD52025FBA700921290 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +60,9 @@
 		26C4AAE72025FBA700921290 /* HomeControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HomeControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		26C4AAEB2025FBA700921290 /* HomeControlUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeControlUITests.swift; sourceTree = "<group>"; };
 		26C4AAED2025FBA700921290 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		26C4AAFB2025FCFC00921290 /* HomeControlTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeControlTableViewController.swift; sourceTree = "<group>"; };
+		26C4AAFE2026005500921290 /* MandolynSensor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MandolynSensor.swift; sourceTree = "<group>"; };
+		26C4AB012026024500921290 /* NetworkMsgs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMsgs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +90,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		26836169202F2CF0007EB5CF /* Program */ = {
+			isa = PBXGroup;
+			children = (
+				2683616A202F2D01007EB5CF /* ProgramManager.swift */,
+			);
+			path = Program;
+			sourceTree = "<group>";
+		};
 		26C4AABF2025FBA600921290 = {
 			isa = PBXGroup;
 			children = (
@@ -97,8 +121,12 @@
 		26C4AACA2025FBA700921290 /* HomeControl */ = {
 			isa = PBXGroup;
 			children = (
+				26836169202F2CF0007EB5CF /* Program */,
+				26C4AB002026023500921290 /* Network */,
+				26C4AAFD2026003D00921290 /* Messages */,
+				26C4AAFA2025FCB700921290 /* VC */,
+				26C4AAF92025FCB100921290 /* Models */,
 				26C4AACB2025FBA700921290 /* AppDelegate.swift */,
-				26C4AACD2025FBA700921290 /* ViewController.swift */,
 				26C4AACF2025FBA700921290 /* Main.storyboard */,
 				26C4AAD22025FBA700921290 /* Assets.xcassets */,
 				26C4AAD42025FBA700921290 /* LaunchScreen.storyboard */,
@@ -123,6 +151,42 @@
 				26C4AAED2025FBA700921290 /* Info.plist */,
 			);
 			path = HomeControlUITests;
+			sourceTree = "<group>";
+		};
+		26C4AAF92025FCB100921290 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		26C4AAFA2025FCB700921290 /* VC */ = {
+			isa = PBXGroup;
+			children = (
+				26C4AAFB2025FCFC00921290 /* HomeControlTableViewController.swift */,
+			);
+			path = VC;
+			sourceTree = "<group>";
+		};
+		26C4AAFD2026003D00921290 /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				26C4AAFE2026005500921290 /* MandolynSensor.swift */,
+				2692160F2041C7D50014E209 /* LightMessage.swift */,
+				269216112042B0BF0014E209 /* Message.swift */,
+				269216132042B3720014E209 /* Command.swift */,
+				269216152042B4A70014E209 /* Destination.swift */,
+			);
+			path = Messages;
+			sourceTree = "<group>";
+		};
+		26C4AB002026023500921290 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				26C4AB012026024500921290 /* NetworkMsgs.swift */,
+				26836167202F2B07007EB5CF /* TCPSocket.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,8 +323,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				26C4AACE2025FBA700921290 /* ViewController.swift in Sources */,
+				26C4AB022026024500921290 /* NetworkMsgs.swift in Sources */,
+				26C4AAFF2026005500921290 /* MandolynSensor.swift in Sources */,
+				269216162042B4A70014E209 /* Destination.swift in Sources */,
+				26836168202F2B07007EB5CF /* TCPSocket.swift in Sources */,
+				26C4AAFC2025FCFC00921290 /* HomeControlTableViewController.swift in Sources */,
+				2683616B202F2D01007EB5CF /* ProgramManager.swift in Sources */,
+				269216142042B3720014E209 /* Command.swift in Sources */,
+				269216122042B0BF0014E209 /* Message.swift in Sources */,
 				26C4AACC2025FBA700921290 /* AppDelegate.swift in Sources */,
+				269216102041C7D50014E209 /* LightMessage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +499,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9JM79Z6TH6;
 				INFOPLIST_FILE = HomeControl/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cuttingcornes.HomeControl;
@@ -441,6 +514,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9JM79Z6TH6;
 				INFOPLIST_FILE = HomeControl/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cuttingcornes.HomeControl;
