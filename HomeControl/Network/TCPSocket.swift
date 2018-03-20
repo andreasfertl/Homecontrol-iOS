@@ -45,7 +45,7 @@ class TCPSocket: NSObject {
     
     func write(stringToSend: String)
     {
-        let data = stringToSend.data(using: .ascii)!
+        let data = stringToSend.data(using: .utf8)!
         _ = data.withUnsafeBytes { outputStream.write($0, maxLength: data.count) }
     }
 }
@@ -66,10 +66,10 @@ extension TCPSocket: StreamDelegate {
             }
             
             //Construct the "Message" object
-            let msg = String(bytesNoCopy: buffer, length: numberOfBytesRead, encoding: .ascii, freeWhenDone: true)
+            let msg = String(bytesNoCopy: buffer, length: numberOfBytesRead, encoding: .utf8, freeWhenDone: true)
             if msg != nil {
                 do {
-                    let convertedMsg = try JSONDecoder().decode(Msg.self, from: msg!.data(using: .ascii)!)
+                    let convertedMsg = try JSONDecoder().decode(Msg.self, from: msg!.data(using: .utf8)!)
 
                     if convertedMsg.commandType == CommandType.MandolynSensor {
                         return convertedMsg.value as? MandolynSensor;

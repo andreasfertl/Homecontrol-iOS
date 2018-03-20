@@ -17,10 +17,12 @@ enum LightState: Int, Codable
 struct LightMessage : Codable {
     let Id: Int?
     let lightState: LightState?
+    let type: String = "Messanger.LightMessage, Messanger"
 
     enum CodingKeys: String, CodingKey {
         case Id
         case lightState
+        case type = "$type"
     }
 }
 

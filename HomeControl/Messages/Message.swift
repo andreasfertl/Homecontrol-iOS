@@ -16,6 +16,8 @@ struct Msg: Codable {
     let command: Command?
     let commandType: CommandType?
     let value: Any?
+    let type: String = "Messanger.Msg, Messanger"
+    let objectType: String = "Messanger.CommandType, Messanger, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
     
     enum CodingKeys: String, CodingKey {
         case Destination
@@ -24,6 +26,8 @@ struct Msg: Codable {
         case Command
         case CommandType
         case Value
+        case type = "$type"
+        case ObjectType
     }
 }
 
@@ -69,7 +73,16 @@ extension Msg {
             
             if commandType == CommandType.Subscribe {
                 if let subscribeToCommandType = value as? CommandType {
+                    try container.encode("Messanger.SubscribeToMsg, Messanger", forKey: .type)
+                    try container.encode(objectType, forKey: .ObjectType)
                     try container.encode(subscribeToCommandType, forKey: .Value)
+                }
+            } else if commandType == .LightControl {
+                if let lightMessage = value as? LightMessage {
+                    var nestedValues = container.nestedContainer(keyedBy: LightMessage.CodingKeys.self, forKey: .Value)
+                    try nestedValues.encode(lightMessage.type, forKey: LightMessage.CodingKeys.type)
+                    try nestedValues.encode(lightMessage.Id, forKey: LightMessage.CodingKeys.Id)
+                    try nestedValues.encode(lightMessage.lightState, forKey: LightMessage.CodingKeys.lightState)
                 }
             }
         }
@@ -77,9 +90,5 @@ extension Msg {
         {
             
         }
-
-//        var additionalInfo = container.nestedContainer(keyedBy: AdditionalInfoKeys.self, forKey: .additionalInfo)
-//        try additionalInfo.encode(elevation, forKey: .elevation)
     }
-    
 }
