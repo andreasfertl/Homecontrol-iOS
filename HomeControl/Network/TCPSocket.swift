@@ -89,6 +89,8 @@ extension TCPSocket: StreamDelegate {
                     break
                 }
             }
+            //msgs might be segmented in several packages
+            
             
             //Construct the "Message" object
             let msg = String(bytesNoCopy: buffer, length: numberOfBytesRead, encoding: .utf8, freeWhenDone: true)
