@@ -12,7 +12,7 @@ import UIKit
 class TCPSocket: NSObject {
     var inputStream: InputStream!
     var outputStream: OutputStream!
-    let maxReadLength = 4096
+    let maxReadLength = 16512
     var lastRxedMsg: String = ""
     weak var delegate: ReceiveMsgDelegate?
     
@@ -43,16 +43,41 @@ class TCPSocket: NSObject {
         outputStream.open()
     }
     
-    func write(stringToSend: String)
+    private func write(stringToSend: String)
     {
         let data = stringToSend.data(using: .utf8)!
         _ = data.withUnsafeBytes { outputStream.write($0, maxLength: data.count) }
     }
+
+    func sendJsonMsg(msgToSend: String?)
+    {
+        if (msgToSend != nil){
+            write(stringToSend: msgToSend! + "\r\n")
+        }
+    }
+
+    func sendMsg(msg: Msg?)
+    {
+        if (msg != nil){
+            do {
+                let jsonMsg = try JSONEncoder().encode(msg)
+                let jsonString = String(data: jsonMsg, encoding: .utf8)
+                if jsonString != nil{
+                    sendJsonMsg(msgToSend: jsonString)
+                }
+            }
+            catch let error
+            {
+                print(error)
+            }
+        }
+    }
+
 }
 
 extension TCPSocket: StreamDelegate {
     
-    private func readAvailableBytes(stream: InputStream) -> MandolynSensor?
+    private func readAvailableBytes(stream: InputStream) -> Msg?
     {
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: maxReadLength)
         
@@ -70,13 +95,7 @@ extension TCPSocket: StreamDelegate {
             if msg != nil {
                 do {
                     let convertedMsg = try JSONDecoder().decode(Msg.self, from: msg!.data(using: .utf8)!)
-
-                    if convertedMsg.commandType == CommandType.MandolynSensor {
-                        return convertedMsg.value as? MandolynSensor;
-                    }
-                    else {
-                        return nil;
-                    }
+                    return convertedMsg
                 }
                 catch let error {
                     print(error)

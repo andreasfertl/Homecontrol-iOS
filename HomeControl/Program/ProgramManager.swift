@@ -20,22 +20,18 @@ class ProgramManager : ButtonPressed {
         tcpSocket = TCPSocket(receiver: receiver)
         tcpSocket.setupNetworkCommunication(connectIp: "10.0.1.127", connectPort: 5005)
         
-        
-        //subscribe to data
-        let msg = Msg(destId: Destination.Server, srcId: Destination.NotSet, remoteHandle: 0, command: Command.set, commandType: CommandType.Subscribe, value: CommandType.MandolynSensor)
-        
-        do {
-            let jsonSubscribeMsg = try JSONEncoder().encode(msg)
-            let jsonString = String(data: jsonSubscribeMsg, encoding: .utf8)
-            if jsonString != nil{
-                tcpSocket.write(stringToSend: jsonString! + "\r\n")
-            }
+        //delay configuration requests
+        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { timer in
+            //subscribe to several messages
+            self.tcpSocket.sendJsonMsg(msgToSend: Msg.genSubscribeToJsonMsg(commandType: CommandType.TempMessage))
+            
+            //request configured sensors
+            self.tcpSocket.sendMsg(msg: Msg(destId: Destination.ConfigurationManager, srcId: Destination.NotSet, remoteHandle: 0, command: Command.get, commandType: CommandType.ConfigurationMessage, value: ConfiguredMessageSensors()))
+            
+            //request configured lights
+            self.tcpSocket.sendMsg(msg: Msg(destId: Destination.ConfigurationManager, srcId: Destination.NotSet, remoteHandle: 0, command: Command.get, commandType: CommandType.ConfigurationMessage, value: ConfiguredLights()))
         }
-        catch let error
-        {
-            print(error)
-        }
-    }
+}
     
     func buttonPress(index: Int, on: Bool) {
         
@@ -48,18 +44,8 @@ class ProgramManager : ButtonPressed {
         
         let lightMessage = LightMessage(Id: index, lightState: stateToChangeTo)
         let msg = Msg(destId: Destination.Subscribers, srcId: Destination.NotSet, remoteHandle: 0, command: Command.set, commandType: CommandType.LightControl, value: lightMessage)
+        tcpSocket.sendMsg(msg: msg)
         
-        do {
-            let jsonSubscribeMsg = try JSONEncoder().encode(msg)
-            let jsonString = String(data: jsonSubscribeMsg, encoding: .utf8)
-            if jsonString != nil{
-                tcpSocket.write(stringToSend: jsonString! + "\r\n")
-            }
-        }
-        catch let error
-        {
-            print(error)
-        }
     }
     
     func GetButtonProtocol() -> ButtonPressed {

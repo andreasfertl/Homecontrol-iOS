@@ -31,6 +31,31 @@ struct Msg: Codable {
     }
 }
 
+//functions
+extension Msg {
+    
+    static func genSubscribeTo(commandType: CommandType) -> Msg {
+        return Msg(destId: Destination.Server, srcId: Destination.NotSet, remoteHandle: 0, command: Command.set, commandType: CommandType.Subscribe, value: commandType)
+    }
+    
+    static func genSubscribeToJsonMsg(commandType: CommandType) -> String? {
+        let msg = genSubscribeTo(commandType: commandType)
+        
+        do {
+            let jsonSubscribeMsg = try JSONEncoder().encode(msg)
+            return String(data: jsonSubscribeMsg, encoding: .utf8)
+        }
+        catch let error
+        {
+            print(error)
+        }
+        return nil
+    }
+
+}
+
+
+//Decode / Encode Json
 extension Msg {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -53,6 +78,23 @@ extension Msg {
                 let Id = try nestedValues.decode(Int.self, forKey: MandolynSensor.CodingKeys.Id)
                 let Temp = try nestedValues.decode(Float.self, forKey: MandolynSensor.CodingKeys.Temp)
                 value = MandolynSensor(Id: Id, Temp: Temp, Humidity: Humidity)
+            } else if commandType == CommandType.TempMessage {
+                let nestedValues = try values.nestedContainer(keyedBy: TempMessage.CodingKeys.self, forKey: .Value)
+                let Humidity = try nestedValues.decode(Int.self, forKey: TempMessage.CodingKeys.Humidity)
+                let Id = try nestedValues.decode(Int.self, forKey: TempMessage.CodingKeys.InternalId)
+                let Temp = try nestedValues.decode(Float.self, forKey: TempMessage.CodingKeys.Temp)
+                let Name = try nestedValues.decode(String.self, forKey: TempMessage.CodingKeys.Name)
+                value = TempMessage(InternalId: Id, Temp: Temp, Humidity: Humidity, Name: Name)
+            } else if commandType == CommandType.ConfigurationMessage {
+                let configData = try values.decode(ConfiguredMessageBasic.self, forKey: .Value)
+                if configData.type == "Messanger.ConfiguredMessageSensors, Messanger" {
+                    value = try values.decode(ConfiguredMessageSensors.self, forKey: .Value)
+                } else if configData.type == "Messanger.ConfiguredLights, Messanger" {
+                    value = try values.decode(ConfiguredLights.self, forKey: .Value)
+                }
+                else {
+                    value = nil
+                }
             } else {
                 value = nil
             }
@@ -83,6 +125,17 @@ extension Msg {
                     try nestedValues.encode(lightMessage.type, forKey: LightMessage.CodingKeys.type)
                     try nestedValues.encode(lightMessage.Id, forKey: LightMessage.CodingKeys.Id)
                     try nestedValues.encode(lightMessage.lightState, forKey: LightMessage.CodingKeys.lightState)
+                }
+            } else if commandType == .ConfigurationMessage {
+                if let configuredMessageSensors = value as? ConfiguredMessageSensors {
+                    var nestedValues = container.nestedContainer(keyedBy: ConfiguredMessageSensors.CodingKeys.self, forKey: .Value)
+                    try nestedValues.encode(configuredMessageSensors.type, forKey: ConfiguredMessageSensors.CodingKeys.type)
+                    try nestedValues.encode(configuredMessageSensors.tempHumiditySensors, forKey: ConfiguredMessageSensors.CodingKeys.tempHumiditySensors)
+                }
+                if let configuredLights = value as? ConfiguredLights {
+                    var nestedValues = container.nestedContainer(keyedBy: ConfiguredLights.CodingKeys.self, forKey: .Value)
+                    try nestedValues.encode(configuredLights.type, forKey: ConfiguredLights.CodingKeys.type)
+                    try nestedValues.encode(configuredLights.lights, forKey: ConfiguredLights.CodingKeys.lights)
                 }
             }
         }

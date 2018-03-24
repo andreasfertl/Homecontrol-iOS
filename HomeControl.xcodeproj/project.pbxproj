@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		264002912062C1C40009EF4D /* ConfiguredMessageSensors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264002902062C1C40009EF4D /* ConfiguredMessageSensors.swift */; };
+		26400295206646AB0009EF4D /* TempMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26400294206646AB0009EF4D /* TempMessage.swift */; };
+		26400297206648450009EF4D /* ConfiguredLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26400296206648450009EF4D /* ConfiguredLights.swift */; };
+		2640029920664B8D0009EF4D /* ConfiguredMessageBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2640029820664B8D0009EF4D /* ConfiguredMessageBase.swift */; };
 		26836168202F2B07007EB5CF /* TCPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26836167202F2B07007EB5CF /* TCPSocket.swift */; };
 		2683616B202F2D01007EB5CF /* ProgramManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2683616A202F2D01007EB5CF /* ProgramManager.swift */; };
 		269216102041C7D50014E209 /* LightMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2692160F2041C7D50014E209 /* LightMessage.swift */; };
@@ -42,6 +46,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		264002902062C1C40009EF4D /* ConfiguredMessageSensors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfiguredMessageSensors.swift; sourceTree = "<group>"; };
+		26400294206646AB0009EF4D /* TempMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempMessage.swift; sourceTree = "<group>"; };
+		26400296206648450009EF4D /* ConfiguredLights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfiguredLights.swift; sourceTree = "<group>"; };
+		2640029820664B8D0009EF4D /* ConfiguredMessageBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfiguredMessageBase.swift; sourceTree = "<group>"; };
 		26836167202F2B07007EB5CF /* TCPSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCPSocket.swift; sourceTree = "<group>"; };
 		2683616A202F2D01007EB5CF /* ProgramManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramManager.swift; sourceTree = "<group>"; };
 		2692160F2041C7D50014E209 /* LightMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightMessage.swift; sourceTree = "<group>"; };
@@ -176,6 +184,10 @@
 				269216112042B0BF0014E209 /* Message.swift */,
 				269216132042B3720014E209 /* Command.swift */,
 				269216152042B4A70014E209 /* Destination.swift */,
+				264002902062C1C40009EF4D /* ConfiguredMessageSensors.swift */,
+				26400294206646AB0009EF4D /* TempMessage.swift */,
+				26400296206648450009EF4D /* ConfiguredLights.swift */,
+				2640029820664B8D0009EF4D /* ConfiguredMessageBase.swift */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -323,6 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2640029920664B8D0009EF4D /* ConfiguredMessageBase.swift in Sources */,
 				26C4AB022026024500921290 /* NetworkMsgs.swift in Sources */,
 				26C4AAFF2026005500921290 /* MandolynSensor.swift in Sources */,
 				269216162042B4A70014E209 /* Destination.swift in Sources */,
@@ -330,8 +343,11 @@
 				26C4AAFC2025FCFC00921290 /* HomeControlTableViewController.swift in Sources */,
 				2683616B202F2D01007EB5CF /* ProgramManager.swift in Sources */,
 				269216142042B3720014E209 /* Command.swift in Sources */,
+				264002912062C1C40009EF4D /* ConfiguredMessageSensors.swift in Sources */,
 				269216122042B0BF0014E209 /* Message.swift in Sources */,
 				26C4AACC2025FBA700921290 /* AppDelegate.swift in Sources */,
+				26400295206646AB0009EF4D /* TempMessage.swift in Sources */,
+				26400297206648450009EF4D /* ConfiguredLights.swift in Sources */,
 				269216102041C7D50014E209 /* LightMessage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
