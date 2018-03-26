@@ -20,8 +20,8 @@ struct LightMessage : Codable {
     let type: String = "Messanger.LightMessage, Messanger"
 
     enum CodingKeys: String, CodingKey {
-        case Id
-        case lightState
+        case Id = "ID"
+        case lightState = "LightState"
         case type = "$type"
     }
 }

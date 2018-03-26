@@ -29,10 +29,6 @@ struct Elements
 class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate {
     
     @IBOutlet var Table: UITableView!
-//    var elements =   ["Obergeschoss", "Aussenlicht"]
-//    var subtititle = ["aus",          "aus"]
-//    var ineternalId = [21,             22]
-    
     var elements: [Elements] = []
     var pm: ProgramManager?
     var buttonPressedDeleagte: ButtonPressed?
@@ -88,8 +84,6 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
                 elements[index].subtitle = update
             }
         }
-        
-        
         self.Table.reloadData()
     }
 
@@ -148,9 +142,7 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
                 let str = "Temperature: " + String(describing: tempHumiditySensor.Temp) + ", Humidity: " + String(describing: tempHumiditySensor.Humidity)
                 UpdateSubtitle(internalId: tempHumiditySensor.InternalId, update: str)
             }
-        }
-        else if (message.commandType == CommandType.ConfigurationMessage)
-        {
+        } else if (message.commandType == CommandType.ConfigurationMessage) {
             if let config = message.value as? ConfiguredMessageSensors {
                 if config.tempHumiditySensors != nil {
                     AddSensorsUniquely(sensors: config.tempHumiditySensors!)
@@ -160,7 +152,15 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
                     AddLightsUniquely(lights: config.lights!)
                 }
             }
-
+        } else if (message.commandType == CommandType.LightControl) {
+            if let msg = message.value as? LightMessage {
+                var str = "ein"
+                if msg.lightState != nil && msg.lightState == LightState.Off {
+                    str = "aus"
+                    
+                }
+                UpdateSubtitle(internalId: msg.Id!, update: str)
+            }
         }
     }
 }

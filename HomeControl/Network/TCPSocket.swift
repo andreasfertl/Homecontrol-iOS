@@ -164,10 +164,6 @@ extension TCPSocket: StreamDelegate {
                     delegate?.receivedMessage(message: msg!)
                 }
             }
-            //let msg = readAvailableBytes(stream: aStream as! InputStream)
-            //if msg != nil {
-            //    delegate?.receivedMessage(message: msg!)
-            //}
         case Stream.Event.endEncountered:
             print("end encountered received")
         case Stream.Event.errorOccurred:

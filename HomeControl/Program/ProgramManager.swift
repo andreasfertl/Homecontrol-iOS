@@ -21,10 +21,11 @@ class ProgramManager : ButtonPressed {
         tcpSocket.setupNetworkCommunication(connectIp: "10.0.1.127", connectPort: 5005)
         
         //delay configuration requests
-        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { timer in
+        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { timer in
             //subscribe to several messages
             self.tcpSocket.sendJsonMsg(msgToSend: Msg.genSubscribeToJsonMsg(commandType: CommandType.TempMessage))
-            
+            self.tcpSocket.sendJsonMsg(msgToSend: Msg.genSubscribeToJsonMsg(commandType: CommandType.LightControl))
+
             //request configured sensors
             self.tcpSocket.sendMsg(msg: Msg(destId: Destination.ConfigurationManager, srcId: Destination.NotSet, remoteHandle: 0, command: Command.get, commandType: CommandType.ConfigurationMessage, value: ConfiguredMessageSensors()))
             

@@ -37,5 +37,6 @@ enum CommandType: Int, Codable
     case ALIVE_MESSAGE
     case ArctecSwitch
     case MandolynSensor
+    case TelldusDeviceSetState
 }
 
