@@ -16,6 +16,7 @@ enum TableType: Int, Codable
 {
     case LightSwitch
     case TempHumiditySensor
+    case WakeOnLan
 }
 
 struct Elements
@@ -37,6 +38,10 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
         super.viewDidLoad()
         pm = ProgramManager(receiver: self)
         buttonPressedDeleagte = pm?.GetButtonProtocol()
+        
+        //configure local WOL element
+        elements.append(Elements(InternalId: 0, Name: "local WOL", type: TableType.WakeOnLan, subtitle: ""))
+        Table.reloadData()
     }
 
     // MARK: - Table view data source
@@ -57,22 +62,33 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
             cell.textLabel?.text = element.Name
             cell.detailTextLabel?.text = element.subtitle
             
-            if element.type == TableType.LightSwitch {
+            if element.type == TableType.LightSwitch || element.type == TableType.WakeOnLan{
                 cell.accessoryType = .detailButton
             }
         }
         
-
         return cell
     }
     
+    func localWOL() {
+        let computer = Awake.Device(MAC: "94:C6:91:15:E6:D1", BroadcastAddr: "255.255.255.255", Port: 9)
+        _ = Awake.target(device: computer)
+    }
+    
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        if (elements[indexPath.row].subtitle == "aus") {
-            buttonPressedDeleagte?.buttonPress(index: elements[indexPath.row].InternalId, on: true)
-            elements[indexPath.row].subtitle = "ein"
-        } else {
-            buttonPressedDeleagte?.buttonPress(index: elements[indexPath.row].InternalId, on: false)
-            elements[indexPath.row].subtitle = "aus"
+        var element = elements[indexPath.row]
+    
+        if element.type == TableType.WakeOnLan {
+            localWOL()
+        }
+        else {
+            if (element.subtitle == "aus") {
+                buttonPressedDeleagte?.buttonPress(index: element.InternalId, on: true)
+                element.subtitle = "ein"
+            } else {
+                buttonPressedDeleagte?.buttonPress(index: element.InternalId, on: false)
+                element.subtitle = "aus"
+            }
         }
         self.Table.reloadData()
     }

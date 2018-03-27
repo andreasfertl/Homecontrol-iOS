@@ -79,20 +79,37 @@ class TCPSocket: NSObject {
 extension TCPSocket: StreamDelegate {
     
     func printFile(s:String) {
-        //var error:NSError? = nil
-//        let path = "/Users/andreasfertl/dump.txt"
-//        //var dump = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)!
-//        //"\(dump)\n\(s)".writeToFile(path, atomically:true, encoding:NSUTF8StringEncoding, error:&error)
-//        let s = s + "\r\n"
-//        do {
-//            let dump =  try! String(contentsOfFile: path, encoding: String.Encoding.utf8)
-//            try  "\(dump)\n\(Date()):\(s)".write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
-//        }
-//        catch let error {
-//            print(error)
-//        }
         
+        //#if DEBUG
+        //var error:NSError? = nil
+        let path = "/Users/andreasfertl/dump.txt"
+        //var dump = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)!
+        //"\(dump)\n\(s)".writeToFile(path, atomically:true, encoding:NSUTF8StringEncoding, error:&error)
+        let s = s + "\r\n"
+        do {
+            let dump =  try! String(contentsOfFile: path, encoding: String.Encoding.utf8)
+            try  "\(dump)\n\(Date()):\(s)".write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
+        }
+        catch let error {
+            print(error)
+        }
+
+        //#endif
     }
+
+    private func getStringFromBuffer(buffer: UnsafeMutablePointer<UInt8>, index: Int, oldIndex: Int) -> String {
+        
+        let tmpBufferLengt = index+1
+        var tmpbuffer = [UInt8]()
+        
+        for idx in 0..<tmpBufferLengt {
+            tmpbuffer.append(buffer[oldIndex+idx])
+        }
+        tmpbuffer.append(0x00)
+
+        return String(cString: tmpbuffer)
+    }
+
     
     private func readLines(stream: InputStream) -> Array<String> {
         var linesToReturn = [String]()
@@ -113,21 +130,25 @@ extension TCPSocket: StreamDelegate {
             oldIndex = 0
             
             //did we already recieve a full line?
-            for index in 0...numberOfBytesRead {
+            var tmpIndex = 0
+            for index in 0..<numberOfBytesRead {
                 if buffer[index] == 0x0A {
                     //a full line
-                    let tmpString = String(bytesNoCopy: buffer+oldIndex, length: index+1-oldIndex, encoding: .utf8, freeWhenDone: false)
-                    let fullLine = rxFullLine + tmpString!
+                    let fullLine = rxFullLine + getStringFromBuffer(buffer: buffer, index: index, oldIndex: oldIndex)
                     linesToReturn.append(fullLine)
+
                     rxFullLine = "" //reset line
                     receivedFullLine = true
-                    oldIndex = index
+                    oldIndex = index + 1 //pointing to next charachter
+                }
+                else {
+                    receivedFullLine = false // just means we received another line in this buffer
+                    tmpIndex = index
                 }
             }
             if !receivedFullLine {
                 //we didn´t receive a full line in this round - store all the bytes for later receive
-                let tmpString = String(bytesNoCopy: buffer, length: numberOfBytesRead, encoding: .utf8, freeWhenDone: false)
-                rxFullLine = rxFullLine + tmpString!
+                rxFullLine = rxFullLine + getStringFromBuffer(buffer: buffer, index: tmpIndex, oldIndex: oldIndex)
             }
             
             buffer.deallocate(capacity: maxReadLength+1)
