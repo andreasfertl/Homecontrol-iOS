@@ -44,6 +44,12 @@ class TCPSocket: NSObject {
         outputStream.open()
     }
     
+    func Stop() {
+        inputStream.close()
+        outputStream.close()
+    }
+    
+    
     private func write(stringToSend: String)
     {
         let data = stringToSend.data(using: .utf8)!

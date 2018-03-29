@@ -15,24 +15,12 @@ protocol ButtonPressed: class {
 class ProgramManager : ButtonPressed {
 
     var tcpSocket: TCPSocket
+    var connected: Bool
     
     init(receiver: ReceiveMsgDelegate) {
         tcpSocket = TCPSocket(receiver: receiver)
-        tcpSocket.setupNetworkCommunication(connectIp: "10.0.1.127", connectPort: 5005)
-        
-        //do a async request of configuration
-        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { timer in
-            //subscribe to several messages
-            self.tcpSocket.sendJsonMsg(msgToSend: Msg.genSubscribeToJsonMsg(commandType: CommandType.TempMessage))
-            self.tcpSocket.sendJsonMsg(msgToSend: Msg.genSubscribeToJsonMsg(commandType: CommandType.LightControl))
-
-            //request configured sensors
-            self.tcpSocket.sendMsg(msg: Msg(destId: Destination.ConfigurationManager, srcId: Destination.NotSet, remoteHandle: 0, command: Command.get, commandType: CommandType.ConfigurationMessage, value: ConfiguredMessageSensors()))
-            
-            //request configured lights
-            self.tcpSocket.sendMsg(msg: Msg(destId: Destination.ConfigurationManager, srcId: Destination.NotSet, remoteHandle: 0, command: Command.get, commandType: CommandType.ConfigurationMessage, value: ConfiguredLights()))
-        }
-}
+        connected = false
+    }
     
     func buttonPress(index: Int, on: Bool) {
         
@@ -51,6 +39,33 @@ class ProgramManager : ButtonPressed {
     
     func GetButtonProtocol() -> ButtonPressed {
         return self
+    }
+    
+    func Start() {
+        if !connected {
+            connected = true
+            tcpSocket.setupNetworkCommunication(connectIp: "10.0.1.127", connectPort: 5005)
+            
+            //do a async request of configuration
+            Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { timer in
+                //subscribe to several messages
+                self.tcpSocket.sendJsonMsg(msgToSend: Msg.genSubscribeToJsonMsg(commandType: CommandType.TempMessage))
+                self.tcpSocket.sendJsonMsg(msgToSend: Msg.genSubscribeToJsonMsg(commandType: CommandType.LightControl))
+                
+                //request configured sensors
+                self.tcpSocket.sendMsg(msg: Msg(destId: Destination.ConfigurationManager, srcId: Destination.NotSet, remoteHandle: 0, command: Command.get, commandType: CommandType.ConfigurationMessage, value: ConfiguredMessageSensors()))
+                
+                //request configured lights
+                self.tcpSocket.sendMsg(msg: Msg(destId: Destination.ConfigurationManager, srcId: Destination.NotSet, remoteHandle: 0, command: Command.get, commandType: CommandType.ConfigurationMessage, value: ConfiguredLights()))
+            }
+        }
+    }
+    
+    func Stop() {
+        if connected {
+            tcpSocket.Stop()
+            connected = false
+        }
     }
 }
 

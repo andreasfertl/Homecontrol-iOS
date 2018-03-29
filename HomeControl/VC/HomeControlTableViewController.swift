@@ -64,6 +64,11 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
     
     // This is the size of our header sections that we will use later on.
     let SectionHeaderHeight: CGFloat = 25
+    
+    //no statusbar at all
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,7 +97,15 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
 //        elements.append(Elements(internalId: 1, name: "Arbeitszimmer", type: TableType.LightSwitch, subtitle: "aus", section: Section.Lights))
 //        elements.append(Elements(internalId: 1, name: "Hems", type: TableType.LightSwitch, subtitle: "aus", section: Section.Lights))
 //        elements.append(Elements(internalId: 1, name: "Utebod", type: TableType.LightSwitch, subtitle: "aus", section: Section.Lights))
-}
+    }
+    
+    func Start() {
+        pm?.Start()
+    }
+    
+    func Stop() {
+        pm?.Stop()
+    }
 
     // MARK: - Table view data source
 
@@ -110,7 +123,7 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: SectionHeaderHeight))
-        view.backgroundColor = UIColor.lightGray
+        view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.bounds.width - 30, height: SectionHeaderHeight))
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = UIColor.white
