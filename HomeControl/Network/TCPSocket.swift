@@ -81,18 +81,18 @@ extension TCPSocket: StreamDelegate {
     func printFile(s:String) {
         
         //#if DEBUG
-        //var error:NSError? = nil
-        let path = "/Users/andreasfertl/dump.txt"
-        //var dump = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)!
-        //"\(dump)\n\(s)".writeToFile(path, atomically:true, encoding:NSUTF8StringEncoding, error:&error)
-        let s = s + "\r\n"
-        do {
-            let dump =  try! String(contentsOfFile: path, encoding: String.Encoding.utf8)
-            try  "\(dump)\n\(Date()):\(s)".write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
-        }
-        catch let error {
-            print(error)
-        }
+//        //var error:NSError? = nil
+//        let path = "/Users/andreasfertl/dump.txt"
+//        //var dump = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)!
+//        //"\(dump)\n\(s)".writeToFile(path, atomically:true, encoding:NSUTF8StringEncoding, error:&error)
+//        let s = s + "\r\n"
+//        do {
+//            let dump =  try! String(contentsOfFile: path, encoding: String.Encoding.utf8)
+//            try  "\(dump)\n\(Date()):\(s)".write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
+//        }
+//        catch let error {
+//            print(error)
+//        }
 
         //#endif
     }

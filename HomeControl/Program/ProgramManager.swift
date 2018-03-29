@@ -20,7 +20,7 @@ class ProgramManager : ButtonPressed {
         tcpSocket = TCPSocket(receiver: receiver)
         tcpSocket.setupNetworkCommunication(connectIp: "10.0.1.127", connectPort: 5005)
         
-        //delay configuration requests
+        //do a async request of configuration
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { timer in
             //subscribe to several messages
             self.tcpSocket.sendJsonMsg(msgToSend: Msg.genSubscribeToJsonMsg(commandType: CommandType.TempMessage))
