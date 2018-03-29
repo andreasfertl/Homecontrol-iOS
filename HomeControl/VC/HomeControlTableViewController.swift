@@ -41,8 +41,9 @@ class Elements {
     let InternalId: Int
     let Name: String
     let type: TableType
-    var subtitle: String
+    var subtitle: String?
     let section: Section //corresponding section
+    var uiswitch: UISwitch? //potential switch
     
     init(internalId: Int, name: String, type: TableType, subtitle: String, section: Section) {
         self.InternalId = internalId
@@ -50,6 +51,14 @@ class Elements {
         self.type = type
         self.subtitle = subtitle
         self.section = section
+    }
+    init(internalId: Int, name: String, type: TableType, subtitle: String, section: Section, uiSwitch: UISwitch) {
+        self.InternalId = internalId
+        self.Name = name
+        self.type = type
+        self.subtitle = subtitle
+        self.section = section
+        self.uiswitch = uiSwitch
     }
 }
 
@@ -63,7 +72,7 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
     var buttonPressedDeleagte: ButtonPressed?
     
     // This is the size of our header sections that we will use later on.
-    let SectionHeaderHeight: CGFloat = 25
+    let SectionHeaderHeight: CGFloat = 30
     
     //no statusbar at all
     override var prefersStatusBarHidden: Bool {
@@ -77,7 +86,7 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
         buttonPressedDeleagte = pm?.GetButtonProtocol()
         
         //configure local WOL element
-        elements.append(Elements(internalId: 1, name: "local WOL", type: TableType.WakeOnLan, subtitle: "DevPC", section: Section.Local))
+        elements.append(Elements(internalId: 1, name: "local WOL", type: TableType.WakeOnLan, subtitle: "DevPC", section: Section.Local, uiSwitch: GenerateSwitch(internalId: 1)))
         
         //testdata
 //        elements.append(Elements(internalId: 1, name: "1", type: TableType.WakeOnLan, subtitle: "1", section: Section.Local))
@@ -125,13 +134,28 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: SectionHeaderHeight))
         view.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.bounds.width - 30, height: SectionHeaderHeight))
-        label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.textColor = UIColor.white
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         guard let tableSection = Section(rawValue: section) else { return view }
         label.text = tableSection.description
         view.addSubview(label)
         return view
     }
+    
+    
+    @objc func switchChanged(_ sender : UISwitch!) {
+        //special case for local IDs
+        if sender.tag == 1 {
+            localWOL()
+            Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { timer in
+                sender.setOn(false, animated: true)
+                self.Table.reloadData()
+            }
+        } else {
+            buttonPressedDeleagte?.buttonPress(index: sender.tag, on: sender.isOn)
+        }
+    }
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeControlCell", for: indexPath)
@@ -143,50 +167,62 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
         if indexPath.row < elements.count {
             let element = elements[indexPath.row]
             cell.textLabel?.text = element.Name
-            cell.detailTextLabel?.text = element.subtitle
+            if element.subtitle != nil {
+                cell.detailTextLabel?.text = element.subtitle
+            }
             //button to activate?
-            if element.type == TableType.LightSwitch || element.type == TableType.WakeOnLan{
-                cell.accessoryType = .detailButton
+            if element.uiswitch != nil {//element.type == TableType.LightSwitch || element.type == TableType.WakeOnLan {
+                cell.accessoryView = element.uiswitch
             }
             else {
-                cell.accessoryType = .none
+                cell.accessoryView = .none
             }
         }
         return cell
     }
         
-    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        guard let section = Section(rawValue: indexPath.section) else { return }
-        var elements = GenerateSubsection(section: section, elements: self.elements)
-        
-        if indexPath.row < elements.count {
-            if elements[indexPath.row].type == TableType.WakeOnLan {
-                localWOL()
-                elements[indexPath.row].subtitle = "sent"
-                Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { timer in
-                    elements[indexPath.row].subtitle = "DevPc"
-                    self.Table.reloadData()
-                }
-
-            }
-            else {
-                if (elements[indexPath.row].subtitle == "aus") {
-                    buttonPressedDeleagte?.buttonPress(index: elements[indexPath.row].InternalId, on: true)
-                    elements[indexPath.row].subtitle = "ein"
-                } else {
-                    buttonPressedDeleagte?.buttonPress(index: elements[indexPath.row].InternalId, on: false)
-                    elements[indexPath.row].subtitle = "aus"
-                }
-            }
-        }
-        self.Table.reloadData()
-    }
+//    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+//        guard let section = Section(rawValue: indexPath.section) else { return }
+//        var elements = GenerateSubsection(section: section, elements: self.elements)
+//
+//        if indexPath.row < elements.count {
+//            if elements[indexPath.row].type == TableType.WakeOnLan {
+//                localWOL()
+//                elements[indexPath.row].subtitle = "sent"
+//                Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { timer in
+//                    elements[indexPath.row].subtitle = "DevPc"
+//                    self.Table.reloadData()
+//                }
+//
+//            }
+//            else {
+//                if (elements[indexPath.row].subtitle == "aus") {
+//                    buttonPressedDeleagte?.buttonPress(index: elements[indexPath.row].InternalId, on: true)
+//                    elements[indexPath.row].subtitle = "ein"
+//                } else {
+//                    buttonPressedDeleagte?.buttonPress(index: elements[indexPath.row].InternalId, on: false)
+//                    elements[indexPath.row].subtitle = "aus"
+//                }
+//            }
+//        }
+//        self.Table.reloadData()
+//    }
 }
 
 
 //handling
 extension HomeControlTableViewController {
+    
+    func GenerateSwitch(internalId: Int) -> UISwitch {
+        let switchView = UISwitch(frame: .zero)
+        switchView.setOn(false, animated: true)
+        switchView.tag = internalId
+        switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
+        switchView.onTintColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
 
+        return switchView
+    }
+    
     func GenerateSubsection(section: Section, elements: [Elements]) -> [Elements] {
         var subsection = [Elements]()
         
@@ -249,7 +285,7 @@ extension HomeControlTableViewController {
             }
         }
         if !found {
-            elements.append(Elements(internalId: light.InternalId, name: light.Name, type: TableType.LightSwitch, subtitle: "aus", section: Section.Lights))
+            elements.append(Elements(internalId: light.InternalId, name: light.Name, type: TableType.LightSwitch, subtitle: "", section: Section.Lights, uiSwitch: GenerateSwitch(internalId: light.InternalId)))
         }
     }
     
@@ -275,6 +311,16 @@ extension HomeControlTableViewController {
         self.Table.reloadData()
     }
 
+    
+    func UpdateSwitchState(internalId: Int, on: Bool) {
+        for index in 0..<elements.count {
+            if elements[index].InternalId == internalId {
+                elements[index].uiswitch?.setOn(on, animated: true)
+            }
+        }
+        //self.Table.reloadData()
+    }
+
     func receivedMessage(message: Msg) {
         
         if (message.commandType == CommandType.TempMessage) {
@@ -294,11 +340,13 @@ extension HomeControlTableViewController {
             }
         } else if (message.commandType == CommandType.LightControl) {
             if let msg = message.value as? LightMessage {
-                var str = "ein"
-                if msg.lightState != nil && msg.lightState == LightState.Off {
-                    str = "aus"
+                if msg.lightState != nil {
+                    if msg.lightState == LightState.Off {
+                        UpdateSwitchState(internalId: msg.Id!, on: false)
+                    } else {
+                        UpdateSwitchState(internalId: msg.Id!, on: true)
+                    }
                 }
-                UpdateSubtitle(internalId: msg.Id!, update: str)
             }
         }
     }
