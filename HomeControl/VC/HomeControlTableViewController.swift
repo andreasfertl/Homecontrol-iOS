@@ -180,33 +180,6 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
         }
         return cell
     }
-        
-//    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-//        guard let section = Section(rawValue: indexPath.section) else { return }
-//        var elements = GenerateSubsection(section: section, elements: self.elements)
-//
-//        if indexPath.row < elements.count {
-//            if elements[indexPath.row].type == TableType.WakeOnLan {
-//                localWOL()
-//                elements[indexPath.row].subtitle = "sent"
-//                Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { timer in
-//                    elements[indexPath.row].subtitle = "DevPc"
-//                    self.Table.reloadData()
-//                }
-//
-//            }
-//            else {
-//                if (elements[indexPath.row].subtitle == "aus") {
-//                    buttonPressedDeleagte?.buttonPress(index: elements[indexPath.row].InternalId, on: true)
-//                    elements[indexPath.row].subtitle = "ein"
-//                } else {
-//                    buttonPressedDeleagte?.buttonPress(index: elements[indexPath.row].InternalId, on: false)
-//                    elements[indexPath.row].subtitle = "aus"
-//                }
-//            }
-//        }
-//        self.Table.reloadData()
-//    }
 }
 
 
@@ -318,7 +291,6 @@ extension HomeControlTableViewController {
                 elements[index].uiswitch?.setOn(on, animated: true)
             }
         }
-        //self.Table.reloadData()
     }
 
     func receivedMessage(message: Msg) {
