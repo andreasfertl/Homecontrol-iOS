@@ -19,12 +19,11 @@ enum Command: Int, Codable
 
 enum CommandType: Int, Codable
 {
-    case Subscribe
     case Run
     case LogMessage
     case LogLevel
     case Stop
-    case LightControl
+    case LightControl = 5
     case BluetoothDevPressence
     case CodeswitchButtonMessage
     case TempMessage
@@ -36,7 +35,9 @@ enum CommandType: Int, Codable
     case MusicMessageVolume
     case ALIVE_MESSAGE
     case ArctecSwitch
-    case MandolynSensor
+    case MandolynSensor = 17
     case TelldusDeviceSetState
+    case Subscribe = 21
 }
+
 

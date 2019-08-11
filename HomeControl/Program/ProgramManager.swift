@@ -44,19 +44,21 @@ class ProgramManager : ButtonPressed {
     func Start() {
         if !connected {
             connected = true
-            tcpSocket.setupNetworkCommunication(connectIp: "10.0.1.127", connectPort: 5005)
+            tcpSocket.setupNetworkCommunication(connectIp: "192.168.68.8", connectPort: 5006)
             
             //do a async request of configuration
             Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { timer in
                 //subscribe to several messages
-                self.tcpSocket.sendJsonMsg(msgToSend: Msg.genSubscribeToJsonMsg(commandType: CommandType.TempMessage))
+                self.tcpSocket.sendJsonMsg(msgToSend: Msg.genSubscribeToJsonMsg(commandType: CommandType.MandolynSensor))
                 self.tcpSocket.sendJsonMsg(msgToSend: Msg.genSubscribeToJsonMsg(commandType: CommandType.LightControl))
                 
                 //request configured sensors
-                self.tcpSocket.sendMsg(msg: Msg(destId: Destination.ConfigurationManager, srcId: Destination.NotSet, remoteHandle: 0, command: Command.get, commandType: CommandType.ConfigurationMessage, value: ConfiguredMessageSensors()))
+                //not supported for the moment on the linux server, i need to configure manually
+                //self.tcpSocket.sendMsg(msg: Msg(destId: Destination.ConfigurationManager, srcId: Destination.NotSet, remoteHandle: 0, command: Command.get, commandType: CommandType.ConfigurationMessage, value: ConfiguredMessageSensors()))
                 
                 //request configured lights
-                self.tcpSocket.sendMsg(msg: Msg(destId: Destination.ConfigurationManager, srcId: Destination.NotSet, remoteHandle: 0, command: Command.get, commandType: CommandType.ConfigurationMessage, value: ConfiguredLights()))
+                //not supported for the moment on the linux server, i need to configure manually
+                //self.tcpSocket.sendMsg(msg: Msg(destId: Destination.ConfigurationManager, srcId: Destination.NotSet, remoteHandle: 0, command: Command.get, commandType: CommandType.ConfigurationMessage, value: ConfiguredLights()))
             }
         }
     }

@@ -86,21 +86,34 @@ class HomeControlTableViewController: UITableViewController, ReceiveMsgDelegate 
         buttonPressedDeleagte = pm?.GetButtonProtocol()
         
         //configure local WOL element
-        elements.append(Elements(internalId: 1, name: "local WOL", type: TableType.WakeOnLan, subtitle: "DevPC", section: Section.Local, uiSwitch: GenerateSwitch(internalId: 1)))
+        elements.append(Elements(internalId: 1, name: "WOL", type: TableType.WakeOnLan, subtitle: "DevPC", section: Section.Local, uiSwitch: GenerateSwitch(internalId: 1)))
         
         //testdata
-//        elements.append(Elements(internalId: 1, name: "1", type: TableType.WakeOnLan, subtitle: "1", section: Section.Local))
-//        elements.append(Elements(internalId: 1, name: "2", type: TableType.WakeOnLan, subtitle: "2", section: Section.Local))
-//        elements.append(Elements(internalId: 1, name: "3", type: TableType.WakeOnLan, subtitle: "3", section: Section.Local))
-//        
-//        elements.append(Elements(internalId: 1, name: "Wohnzimmer", type: TableType.TempHumiditySensor, subtitle: "aus", section: Section.Sensors))
-//        elements.append(Elements(internalId: 1, name: "Bad", type: TableType.TempHumiditySensor, subtitle: "aus", section: Section.Sensors))
-//        elements.append(Elements(internalId: 1, name: "Schlafzimmer", type: TableType.TempHumiditySensor, subtitle: "aus", section: Section.Sensors))
-//        elements.append(Elements(internalId: 1, name: "Flur", type: TableType.TempHumiditySensor, subtitle: "aus", section: Section.Sensors))
-//        elements.append(Elements(internalId: 1, name: "Küche", type: TableType.TempHumiditySensor, subtitle: "aus", section: Section.Sensors))
-//
-//        elements.append(Elements(internalId: 1, name: "Wohnzimmer", type: TableType.LightSwitch, subtitle: "aus", section: Section.Lights))
-//        elements.append(Elements(internalId: 1, name: "Küche", type: TableType.LightSwitch, subtitle: "aus", section: Section.Lights))
+        elements.append(Elements(internalId: 12, name: "Living Room", type: TableType.TempHumiditySensor, subtitle: "not received yet", section: Section.Sensors))
+        elements.append(Elements(internalId: 11, name: "Outside", type: TableType.TempHumiditySensor, subtitle: "not received yet", section: Section.Sensors))
+        elements.append(Elements(internalId: 21, name: "Shed", type: TableType.TempHumiditySensor, subtitle: "not received yet", section: Section.Sensors))
+        
+        AddLightUniquely(light: ConfiguredLight(InternalId: 1001, Name: "Upstairs"))
+        AddLightUniquely(light: ConfiguredLight(InternalId: 1002, Name: "Outside"))
+        AddLightUniquely(light: ConfiguredLight(InternalId: 1011, Name: "Master Bedroom Ms."))
+        AddLightUniquely(light: ConfiguredLight(InternalId: 1008, Name: "Master Bedroom Mr."))
+        AddLightUniquely(light: ConfiguredLight(InternalId: 1003, Name: "Master Bedroom"))
+
+        AddLightUniquely(light: ConfiguredLight(InternalId: 1004, Name: "Kitchen"))
+        AddLightUniquely(light: ConfiguredLight(InternalId: 1009, Name: "Kitchen window"))
+
+        AddLightUniquely(light: ConfiguredLight(InternalId: 1005, Name: "Living Room stand"))
+        AddLightUniquely(light: ConfiguredLight(InternalId: 1006, Name: "Living Room sideboard"))
+        AddLightUniquely(light: ConfiguredLight(InternalId: 1007, Name: "Living Room piano"))
+
+        AddLightUniquely(light: ConfiguredLight(InternalId: 1010, Name: "Office"))
+        
+        //elements.append(Elements(internalId: 1001, name: "Upstairs", type: TableType.LightSwitch, subtitle: "off", section: Section.Lights))
+        //elements.append(Elements(internalId: 1002, name: "Outside", type: TableType.LightSwitch, subtitle: "off", section: Section.Lights))
+        //elements.append(Elements(internalId: 1003, name: "Master Bedroom", type: TableType.LightSwitch, subtitle: "off", section: Section.Lights))
+        //elements.append(Elements(internalId: 1010, name: "Office", type: TableType.LightSwitch, subtitle: "off", section: Section.Lights))
+
+        //        elements.append(Elements(internalId: 1, name: "Küche", type: TableType.LightSwitch, subtitle: "aus", section: Section.Lights))
 //        elements.append(Elements(internalId: 1, name: "Schlafzimmer", type: TableType.LightSwitch, subtitle: "aus", section: Section.Lights))
 //        elements.append(Elements(internalId: 1, name: "Bad", type: TableType.LightSwitch, subtitle: "aus", section: Section.Lights))
 //        elements.append(Elements(internalId: 1, name: "Arbeitszimmer", type: TableType.LightSwitch, subtitle: "aus", section: Section.Lights))
@@ -295,10 +308,10 @@ extension HomeControlTableViewController {
 
     func receivedMessage(message: Msg) {
         
-        if (message.commandType == CommandType.TempMessage) {
-            if let tempHumiditySensor = message.value as? TempMessage {
-                let str = "Temperature: " + String(describing: tempHumiditySensor.Temp) + ", Humidity: " + String(describing: tempHumiditySensor.Humidity)
-                UpdateSubtitle(internalId: tempHumiditySensor.InternalId, update: str)
+        if (message.commandType == CommandType.MandolynSensor) {
+            if let tempHumiditySensor = message.value as? MandolynSensor {
+                let str = "Temperature: " + String(describing: tempHumiditySensor.Temp!) + ", Humidity: " + String(describing: tempHumiditySensor.Humidity!)
+                UpdateSubtitle(internalId: tempHumiditySensor.Id!, update: str)
             }
         } else if (message.commandType == CommandType.ConfigurationMessage) {
             if let config = message.value as? ConfiguredMessageSensors {

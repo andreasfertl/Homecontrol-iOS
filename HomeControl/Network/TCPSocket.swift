@@ -157,7 +157,7 @@ extension TCPSocket: StreamDelegate {
                 rxFullLine = rxFullLine + getStringFromBuffer(buffer: buffer, index: tmpIndex, oldIndex: oldIndex)
             }
             
-            buffer.deallocate(capacity: maxReadLength+1)
+            buffer.deallocate()
         }
         
         return linesToReturn
